@@ -50,7 +50,6 @@
 #include "../componentManagers/FrameManager.h"
 #include "../protocolStack/mac/harq-manager.h"
 
-
 UePhy::UePhy()
 {
   m_channelsForRx.clear ();
@@ -120,10 +119,15 @@ UePhy::StartTx (shared_ptr<PacketBurst> p)
 DEBUG_LOG_START_1(SIM_ENV_TEST_DEVICE_ON_CHANNEL)
   cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx" << endl;
 DEBUG_LOG_END
-
+  //cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx (UE)" << endl;
+  
   GetUlChannel ()->StartTx (p, GetTxSignal (), GetDevice ());
 }
 
+// Marcel's TODO
+// THIS STARTRX GETS CALLED TOO!!!
+// SRC, DST, SINR, ERR is in here
+// figure out a way to get outputs in here
 void
 UePhy::StartRx (shared_ptr<PacketBurst> p, ReceivedSignal* rxSignal)
 {
@@ -192,6 +196,7 @@ DEBUG_LOG_END
     }
 
   double power; // power transmission for one sub channel [dB]
+  
   switch(txMode)
     {
     case 1:
@@ -1059,11 +1064,11 @@ DEBUG_LOG_END
         {
           if (phyError)
             {
-              cout << "**** YES PHY ERROR (node " << GetDevice ()->GetIDNetworkNode () << ") ****" << endl;
+              //cout << "**** YES PHY ERROR (node " << GetDevice ()->GetIDNetworkNode () << ") ****" << endl;
             }
           else
             {
-              cout << "**** NO PHY ERROR (node " << GetDevice ()->GetIDNetworkNode () << ") ****" << endl;
+              //cout << "**** NO PHY ERROR (node " << GetDevice ()->GetIDNetworkNode () << ") ****" << endl;
             }
         }
     }
@@ -1094,21 +1099,30 @@ if (_PHY_TRACING_) {
     {
       MCS_ = m_mcsIndexForRx.at(0);
       TBS_ = GetDevice ()->GetProtocolStack ()->GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (m_mcsIndexForRx.at(0), m_mcsIndexForRx.at(0), nbOfRxSubChannels, m_rankForRx);
-      cout << "PHY_RX SRC " << ue->GetTargetNode()->GetIDNetworkNode()
-            << " DST " << ue->GetIDNetworkNode()
-            << " X " << ue->GetMobilityModel ()->GetAbsolutePosition ()->GetCoordinateX ()
-            << " Y " << ue->GetMobilityModel ()->GetAbsolutePosition ()->GetCoordinateY ()
-            << " SINR " << effective_sinr
-            << " RB " << nbOfRxSubChannels
-            << " MCS " << MCS_
-            << " SIZE " << TBS_
-            << " ERR " << phyError
-            << " T " << Simulator::Init()->Now();
-            if(std::getenv("USE_COVERSHIFT") != nullptr)
-            {
-              cout << " CS " << FrameManager::Init()->GetCoverShiftIndex();
-            }
-           cout << endl;
+      // cout << "PHY_RX SRC " << ue->GetTargetNode()->GetIDNetworkNode()
+      //       << " DST " << ue->GetIDNetworkNode()
+      //       << " X " << ue->GetMobilityModel ()->GetAbsolutePosition ()->GetCoordinateX ()
+      //       << " Y " << ue->GetMobilityModel ()->GetAbsolutePosition ()->GetCoordinateY ()
+      //       << " SINR " << effective_sinr
+      //       << " RB " << nbOfRxSubChannels
+      //       << " MCS " << MCS_
+      //       << " SIZE " << TBS_
+      //       << " ERR " << phyError
+      //       << " T " << Simulator::Init()->Now();
+      //       if(std::getenv("USE_COVERSHIFT") != nullptr)
+      //       {
+      //         cout << " CS " << FrameManager::Init()->GetCoverShiftIndex();
+      //       }
+      //      cout << endl;
+      // Marcel's TODO uncomment above when parser is done
+      // Output new_output;
+      // new_output.set_type("rx");
+      // new_output.set_src(ue->GetTargetNode()->GetIDNetworkNode());
+      // new_output.set_dst(ue->GetIDNetworkNode());
+      // new_output.set_sinr(effective_sinr);
+      // new_output.set_err(phyError);
+      // Outputs::outputs.push_back(new_output);
+      //outputs.add_output("rx", ue->GetTargetNode()->GetIDNetworkNode(), ue->GetIDNetworkNode(), effective_sinr, phyError);
     }
 }
 

@@ -33,7 +33,6 @@
  *  g.piro@poliba.it
  */
 
-
 #include "scenarios/simple.h"
 #include "scenarios/single-cell-without-interference.h"
 #include "scenarios/single-cell-with-interference.h"

@@ -26,6 +26,7 @@
 
 #include <memory>
 #include "../load-parameters.h"
+#include "../outputs.h"
 
 class NetworkNode;
 class RadioChannel;

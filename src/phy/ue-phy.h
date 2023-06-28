@@ -28,6 +28,8 @@
 #include <vector>
 #include <armadillo>
 
+#include "../outputs.h"
+
 class IdealControlMessage;
 class UserEquipment;
 

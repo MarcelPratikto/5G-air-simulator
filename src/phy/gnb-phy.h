@@ -24,6 +24,7 @@
 #define GNB_PHY_H_
 
 #include "phy.h"
+#include "../outputs.h"
 
 class IdealControlMessage;
 class GNodeB;

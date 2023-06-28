@@ -94,14 +94,16 @@ GnbPhy::DoSetBandwidthManager (void)
 void
 GnbPhy::StartTx (shared_ptr<PacketBurst> p)
 {
-  //cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx" << endl;
+  //cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx (GNB)" << endl;
 
   if (FrameManager::Init()->MbsfnEnabled()==true && FrameManager::Init()->isMbsfnSubframe()==true)
     {
+      //cout << "TX (GNB DLMC)" << endl;
       GetDlMcChannel ()->StartTx (p, GetTxSignal (), GetDevice ());
     }
   else
     {
+      //cout << "TX (GNB DL)" << endl; //THIS ONE GETS CALLED FOR TX
       GetDlChannel ()->StartTx (p, GetTxSignal (), GetDevice ());
     }
 }
@@ -112,7 +114,7 @@ GnbPhy::StartRx (shared_ptr<PacketBurst> p, TransmittedSignal* txSignal)
 DEBUG_LOG_START_1(SIM_ENV_TEST_DEVICE_ON_CHANNEL)
   cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy rx" << endl;
 DEBUG_LOG_END
-
+  
   //COMPUTE THE SINR
   vector<double> measuredSinr;
   vector<int> channelsForRx;
