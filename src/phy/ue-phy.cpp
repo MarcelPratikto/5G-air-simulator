@@ -119,7 +119,7 @@ UePhy::StartTx (shared_ptr<PacketBurst> p)
 DEBUG_LOG_START_1(SIM_ENV_TEST_DEVICE_ON_CHANNEL)
   cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx" << endl;
 DEBUG_LOG_END
-  //cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx (UE)" << endl;
+  cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy tx (UE)" << endl;
   
   GetUlChannel ()->StartTx (p, GetTxSignal (), GetDevice ());
 }
@@ -134,6 +134,9 @@ UePhy::StartRx (shared_ptr<PacketBurst> p, ReceivedSignal* rxSignal)
 DEBUG_LOG_START_1(SIM_ENV_TEST_DEVICE_ON_CHANNEL)
   cout << "Node " << GetDevice()->GetIDNetworkNode () << " starts phy rx" << endl;
 DEBUG_LOG_END
+
+  // MARCEL'S TODO
+  std::vector<Output> *outputs = Outputs::create_vector();
 
   m_sinrForCQI.clear();
 
@@ -196,7 +199,7 @@ DEBUG_LOG_END
     }
 
   double power; // power transmission for one sub channel [dB]
-  
+  //cout << "TX MODE " << txMode << endl; // keeps running case 1
   switch(txMode)
     {
     case 1:
@@ -1115,14 +1118,18 @@ if (_PHY_TRACING_) {
       //       }
       //      cout << endl;
       // Marcel's TODO uncomment above when parser is done
-      // Output new_output;
-      // new_output.set_type("rx");
-      // new_output.set_src(ue->GetTargetNode()->GetIDNetworkNode());
-      // new_output.set_dst(ue->GetIDNetworkNode());
-      // new_output.set_sinr(effective_sinr);
-      // new_output.set_err(phyError);
-      // Outputs::outputs.push_back(new_output);
-      //outputs.add_output("rx", ue->GetTargetNode()->GetIDNetworkNode(), ue->GetIDNetworkNode(), effective_sinr, phyError);
+      Output new_output;
+      new_output.set_type("rx");
+      // GET Target Node is always returning a GnodeB object
+      // with an ID Network Node of 1
+      // SetTargetNode is never called
+      //ue->Print();      
+      new_output.set_src(ue->GetTargetNode()->GetIDNetworkNode());
+      new_output.set_dst(ue->GetIDNetworkNode());
+      new_output.set_sinr(effective_sinr);
+      new_output.set_err(phyError);
+      //outputs->push_back(new_output);
+      //Outputs::print_vector(outputs);
     }
 }
 
@@ -1146,6 +1153,11 @@ if (_PHY_TRACING_) {
   m_mcsIndexForTx.clear ();
   m_pmiForRx.clear();
 
+  // MARCEL'S TODO
+  // ADD RX VECTOR TO A FUNCTION THAT WILL CREATE THE VISIBILITY LIST
+  // DELETE THE VECTOR THAT WAS CREATED
+  outputs->clear();
+  delete outputs;
 }
 
 void

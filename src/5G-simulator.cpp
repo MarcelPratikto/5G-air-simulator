@@ -64,12 +64,13 @@
 #include <cstring>
 #include <fenv.h>
 
+#include "outputs.h"
+
 std::mt19937 commonGen(time(NULL));
 
 int
 main (int argc, char *argv[])
 {
-
   // Raise a floating point error when some computation gives a NaN as result
 //  feenableexcept(FE_ALL_EXCEPT & ~FE_INEXACT);
 

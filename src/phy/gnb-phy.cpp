@@ -104,6 +104,7 @@ GnbPhy::StartTx (shared_ptr<PacketBurst> p)
   else
     {
       //cout << "TX (GNB DL)" << endl; //THIS ONE GETS CALLED FOR TX
+      //cout << "TX (GNB DL) " << GetDevice()->GetIDNetworkNode() << endl;
       GetDlChannel ()->StartTx (p, GetTxSignal (), GetDevice ());
     }
 }

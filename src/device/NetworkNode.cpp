@@ -262,4 +262,3 @@ NetworkNode::GetMulticastDestination (void)
 {
   return m_multicastDest;
 }
-

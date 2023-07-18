@@ -11,10 +11,15 @@ public:
     Outputs();
     ~Outputs();
 
-    void add_output(std::string type, int src, int dst, double sinr, bool err);
+    // void add_output(std::string type, int src, int dst, double sinr, bool err);
+
+    static std::vector<Output> *create_vector(void);
+
+    // for debug
+    static void print_vector(std::vector<Output> *outputs);
 
 private:
-    std::vector<Output> outputs;
+    std::vector<Output> m_outputs;    
 };
 
-#endif /* OUTPUT_H_ */
+#endif /* OUTPUTS_H_ */

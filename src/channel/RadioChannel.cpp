@@ -46,14 +46,13 @@ RadioChannel::~RadioChannel()
   delete m_propagationLossModel;
 }
 
-Outputs outputs;
 void
 RadioChannel::StartTx (shared_ptr<PacketBurst> p, TransmittedSignal* txSignal, NetworkNode* src)
 {
 DEBUG_LOG_START_1(SIM_ENV_TEST_DEVICE_ON_CHANNEL)
   cout << "RadioChannel::StartTx ch " << GetChannelId () << endl;
 DEBUG_LOG_END
-  //cout << "TX (RADIOCHANNEL)" << endl; //THIS ONE GETS CALLED FOR TX AFTER GNB DL
+  //cout << "TX (RADIOCHANNEL) " << src->GetIDNetworkNode() << endl; //THIS ONE GETS CALLED FOR TX AFTER GNB DL
   Simulator::Init()->Schedule(0.001, // default 0.001
                               &RadioChannel::StartRx,
                               this,
@@ -68,16 +67,13 @@ DEBUG_LOG_END
 
 // Marcel's TODO
 // add TX (above) and RX (below) to outputs
-//int startrxnum = 0;
 void
 RadioChannel::StartRx (shared_ptr<PacketBurst> p, TransmittedSignal* txSignal, NetworkNode* src)
 {
 DEBUG_LOG_START_1(SIM_ENV_TEST_DEVICE_ON_CHANNEL)
   cout << "RadioChannel::StartRx ch " << GetChannelId () << endl;
 DEBUG_LOG_END
-  //cout << "(RADIOCHANNEL) START RX #" << startrxnum++ << endl;
 
-  int loop_iteration = 0;
   for (auto dst : *GetDevices())
     {
 
@@ -102,10 +98,11 @@ DEBUG_LOG_END
         }
 
       // Marcel's TODO
-      // figure out SRC, DST, SINR, ERR
-      // cout << "LOOP #" << loop_iteration++ <<
-      // "\nSRC: " << src->GetIDNetworkNode() <<
-      // "\nDST: " << dst->GetIDNetworkNode() << endl;
+      // figure out why SRC is always 1
+      // cout << "RADIOCHANNEL RX" <<
+      // "\n\tSRC: " << ((UserEquipment*)src)->GetTargetNode()->GetIDNetworkNode() <<
+      // "\n\tTWR: " << src->GetIDNetworkNode() <<
+      // "\n\tDST: " << dst->GetIDNetworkNode() << endl;
 
       //DELIVERY THE BURST OF PACKETS
       if(dst->GetNodeType() != NetworkNode::TYPE_MULTICAST_DESTINATION)
